@@ -2,12 +2,13 @@
 import { BoardItem } from "./components/BoardItem.js";
 import Button  from "../../components/Button.js";
 import { navigateTo } from "../../router.js";
+import CONFIG from "../../config.js";
 
 export default function BoardListPage () {
     const app = document.getElementById("app");
     app.innerHTML = `
         <div class="board-container">
-            <p>안녕하세요,</p>
+            <p>안녕하세요,<span id="user-name"></span></p>
             <p>아무 말 대잔치 <strong>게시판</strong> 입니다. </p>
             <div id="board-button-div"></div>
             <div id="board-list" class="board-list"></div>
@@ -26,7 +27,9 @@ export default function BoardListPage () {
     const uploadButtonDiv = document.getElementById('board-button-div');
     uploadButtonDiv.appendChild(uploadButton);
 
-    fetch("../../src/data/boards.json")
+    fetch(`${CONFIG.API_URL}/posts`,{
+        method: "GET"
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error("게시판 데이터를 불러오는 데 실패했습니다.");
@@ -48,4 +51,6 @@ export default function BoardListPage () {
             document.getElementById("board-list").innerHTML = `<p>게시판 데이터를 불러오는 데 실패했습니다.</p>`;
         });
 
+    const nickname = document.getElementById("user-name")
+    nickname.innerHTML=`${JSON.parse(sessionStorage.getItem("user")).nickname}`
 }
