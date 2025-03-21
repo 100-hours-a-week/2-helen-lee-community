@@ -84,6 +84,8 @@ export default function LoginPage() {
 
             if (response.ok) {
                 // 로그인 성공
+                const data = await response.json(); // 파싱
+                sessionStorage.setItem("user",JSON.stringify(data) ); // 세션 스토리지에 로그인 정보 저장
                 navigateTo("/boards");
             } else if (response.status == 401) {
                 loginError.textContent = "이메일과 비밀번호를 확인해주세요.";

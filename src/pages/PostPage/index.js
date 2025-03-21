@@ -1,4 +1,5 @@
 import Button from "../../components/Button.js";
+import CONFIG from "../../config.js";
 import { navigateTo } from "../../router.js";
 
 export default function PostPage () {
@@ -26,11 +27,35 @@ export default function PostPage () {
 
     const postButton = Button({
         text : "완료",
-        onClick: () => {navigateTo('/post')},
+        onClick: () => {requestUpload()},
 
     })
 
     const postButtonDiv = document.getElementById("post-button-div")
     postButtonDiv.appendChild(postButton);
+
+}
+
+// 게시글 작성 요청
+async function requestUpload () {
+    const title = document.getElementById("title").value;
+    const post_content = document.getElementById("content").value;
+    const post_image_url = document.getElementById("image").value;
+    const user_id = JSON.parse(sessionStorage.getItem("user")).user_id;
+
+    try {
+        const response = await fetch(`${CONFIG.API_URL}/posts`, {
+            method: "POST",
+            headers: {"Content-Type" : "application/json"},
+            body: JSON.stringify({title, post_content, post_image_url, user_id})
+        })
+
+        if (response.ok) {
+            navigateTo("/boards");
+        }
+    }
+    catch(error) {
+        console.error("서버 에러 발생", error);
+    }
 
 }
