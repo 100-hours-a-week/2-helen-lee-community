@@ -6,20 +6,44 @@ import PostPage from "./pages/PostPage/index.js";
 import ProfilePage from "./pages/ProfilePage/index.js";
 import RegisterPage from "./pages/RegisterPage/index.js";
 
-const routes = {
-    "/": LoginPage,
-    "/register": RegisterPage,
-    "/boards": BoardListPage,
-    "/post" : PostPage,
-    "/profile" : ProfilePage,
-    "/boardDetail" : BoardDetailPage,
-    //"/boardDetail/:id" : BoardDetailPage,
-};
+const routes = [
+    { path: /^\/$/, component: LoginPage },
+    { path: /^\/register$/, component: RegisterPage },
+    { path: /^\/boards$/, component: BoardListPage },
+    { path: /^\/post$/, component: PostPage },
+    { path: /^\/profile$/, component: ProfilePage },
+    { path: /^\/boardDetail\/(\d+)$/, component: BoardDetailPage },
+];
 
 export function navigateTo(path) {
     window.history.pushState({}, "", path);
     renderPage();
 }
+
+
+export function renderPage() {
+    const path = window.location.pathname || "/";
+
+    for (const route of routes) {
+        const match = path.match(route.path);
+        if (match) {
+            document.getElementById("app").innerHTML = "";
+            route.component(match[1]); 
+            return;
+        }
+    }
+
+    // 매칭 안 되면 로그인 페이지로
+    LoginPage();
+}
+
+
+
+
+window.addEventListener("popstate", renderPage); // 뒤로 가기
+
+
+
 /* 
 export function renderPage() {
     const path = window.location.pathname || "/";
@@ -50,13 +74,3 @@ export function renderPage() {
         LoginPage();
     }
 } */
-
-export function renderPage() {
-    const path = window.location.pathname || "/";
-    document.getElementById("app").innerHTML = "";
-    (routes[path] || LoginPage)();
-}
-
-
-
-window.addEventListener("popstate", renderPage); // 뒤로 가기

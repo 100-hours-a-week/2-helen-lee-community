@@ -1,5 +1,5 @@
-export default function UserItem ({nickname, profile_image, created_at, user_id}) {
-    const current_user = 1
+export default function UserItem ({nickname, profile_image, created_at}) {
+    const current_user = 'hyemi'
     const userItemMeta = document.createElement("div")
     userItemMeta.classList.add("userItem-meta")
 
@@ -9,7 +9,7 @@ export default function UserItem ({nickname, profile_image, created_at, user_id}
         <span class="userItem-author">${nickname}</span>
         <span class="userItem-date">${created_at}</span>
     </div>
-        ${current_user === user_id ?  
+        ${current_user === nickname ?  
             `<div class ="userItem-button-div">
                 <button class="userItem-edit-button">수정</button>
                 <button class="userItem-edit-button">삭제</button>

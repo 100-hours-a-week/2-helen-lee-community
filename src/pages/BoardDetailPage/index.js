@@ -1,21 +1,36 @@
 import Button from "../../components/Button.js";
+import CONFIG from "../../config.js";
 import UserItem from "../BoardDetailPage/components/UserItem.js";
-export default function BoardDetailPage (params) {
-    
+export default async function BoardDetailPage (post_id) {
     const app = document.getElementById("app");
-    console.log(params);
+    //console.log("post id:", id);
 
+    // ✅ 1. 게시글 데이터 불러오기
+    let postData;
+    try {
+        const res = await fetch(`${CONFIG.API_URL}/posts/${post_id}`,
+            {method: "GET"}
+        );
+        if (!res.ok) throw new Error("서버 응답 실패");
+        postData = await res.json(); // 예: { title: "...", content: "...", likes: 1, views: 2, comments: [] }
+    } catch (err) {
+        app.innerHTML = `<p>게시글을 불러오지 못했습니다.</p>`;
+        console.error(err);
+        return;
+    }
+
+    // ✅ 2. HTML 렌더링
     app.innerHTML = `
          <div class="boardItem-container">
-            <h2 class="boardItem-title">제목 1</h2>
+            <h2 class="boardItem-title">${postData.title}</h2>
             <div id="userItem"></div>
             <hr class="boardItem-hr"/>
             <div class="boardItem-img"></div>
-            <p class="post-content">이것은 더미 게시글 내용입니다.</p>
+            <p class="post-content">${postData.post_content}</p>
             <div class="post-stats">
-                <div class="stat-item"><strong>123</strong> 좋아요수</div>
-                <div class="stat-item"><strong>123</strong> 조회수</div>
-                <div class="stat-item"><strong>123</strong> 댓글</div>
+                <div class="stat-item"><strong>${postData.like_count}</strong> 좋아요수</div>
+                <div class="stat-item"><strong>${postData.views_count}</strong> 조회수</div>
+                <div class="stat-item"><strong>${postData.views_count}</strong> 댓글</div>
             </div>
             <hr class="boardItem-hr"/>
             <div class="comment-section">
@@ -26,37 +41,35 @@ export default function BoardDetailPage (params) {
         </div>
     `;
 
-    const userItem = document.getElementById("userItem")
-    userItem.appendChild(UserItem({nickname: "미", created_at : "2025-01-01 13:00", user_id: 1, profile_image: null}))
+    // ✅ 3. 작성자 정보 출력 (예시로 작성자 닉네임, 시간 등)
+    const userItem = document.getElementById("userItem");
+    userItem.appendChild(UserItem({
+        nickname: postData.nickname,
+        created_at: postData.created_at,
+        profile_image: postData.profile_image_url
+    }));
 
+    // // ✅ 4. 댓글 출력
+    // const commentList = document.getElementById("comment-list");
+    // postData.comments.forEach(comment => {
+    //     commentList.appendChild(UserItem(comment));
 
-    /** 댓글 */
-    const comments = [
-        { user_id: 1, nickname: "더미 작성자 1", created_at: "2025-02-20 12:30", content: "첫 번째 댓글입니다." },
-        { user_id: 2, nickname: "더미 작성자 2", created_at: "2025-02-19 15:45", content: "두 번째 댓글입니다." },
-        { user_id: 3, nickname: "더미 작성자 3", created_at: "2025-02-18 10:20", content: "세 번째 댓글입니다." }
-    ];
+    //     const commentContent = document.createElement("p");
+    //     commentContent.classList.add("comment-content");
+    //     commentContent.innerHTML = `<p>${comment.content}</p>`;
+    //     commentList.appendChild(commentContent);
+    // });
 
-    const commentList = document.getElementById("comment-list");
-    comments.forEach(comment => {
-        commentList.appendChild(UserItem(comment));
-        
-        // 공통 컴포넌트(유저 항목)에 댓글 내용 추가 
-        const commentContent = document.createElement("p")
-        commentContent.classList.add("comment-content")
-        commentContent.innerHTML = `<p>${comment.content}</p>`
-        commentList.appendChild(commentContent)
-    });
-
-
+    // ✅ 5. 댓글 작성 버튼
     const commentButton = Button({
         text: '댓글 등록',
-        onClick: () => {console.log('댓글 작성');}
-        ,
+        onClick: () => {
+            console.log('댓글 작성');
+            // 댓글 등록 API 작성하면 여기에 붙이면 됨
+        },
         className: "comment-button"
-    })
+    });
 
     const commentButtonDiv = document.querySelector(".comment-button-div");
     commentButtonDiv.appendChild(commentButton);
-
 }
