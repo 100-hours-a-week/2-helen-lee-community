@@ -95,9 +95,6 @@ export default async function BoardDetailPage (post_id) {
     async function uploadComment () {
         try {
             const commentInput = document.getElementById("comment-input");
-            console.log(commentInput);
-            console.log( {"post_id" : post_id, "user_id": JSON.parse(sessionStorage.getItem("user")).user_id, "comment_content": commentInput.value.trim()})
-
             const res = await fetch(`${CONFIG.API_URL}/posts/${post_id}/comment`,
                 {
                     method: "POST",
