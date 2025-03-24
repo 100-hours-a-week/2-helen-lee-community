@@ -1,5 +1,8 @@
 export default function UserItem ({nickname, profile_image, created_at}) {
-    const current_user = 'hyemi'
+
+
+    const current_user = JSON.parse(sessionStorage.getItem("user")).nickname;
+    console.log(sessionStorage.getItem("user"));
     const userItemMeta = document.createElement("div")
     userItemMeta.classList.add("userItem-meta")
 
