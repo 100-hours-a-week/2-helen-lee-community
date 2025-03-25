@@ -5,7 +5,7 @@ import UserItem from "../BoardDetailPage/components/UserItem.js";
 export default async function BoardDetailPage (post_id) {
     const app = document.getElementById("app");
     console.log(post_id);
-    
+
      //  게시글 데이터 fetch
      let postData;
      try {
@@ -22,6 +22,8 @@ export default async function BoardDetailPage (post_id) {
          return;
      }
 
+   
+
     
 
     app.innerHTML = `
@@ -33,8 +35,7 @@ export default async function BoardDetailPage (post_id) {
             <p class="post-content">${postData.post_content}</p>
             <div class="post-stats">
                 <div class="stat-item"><strong>${postData.like_count}</strong> 좋아요수</div>
-                <div class="stat-item"><strong>${postData.views_count}</strong> 조회수</div>
-                <div class="stat-item"><strong>${postData.views_count}</strong> 댓글</div>
+                <div class="stat-item"><strong id="comment-count"></strong> 댓글수</div>
             </div>
             <hr class="boardItem-hr"/>
             <div class="comment-section">
@@ -45,6 +46,38 @@ export default async function BoardDetailPage (post_id) {
         </div>
     `;
 
+        /** 댓글 렌더링 */
+        async function renderComments(post_id) {
+            const commentList = document.getElementById("comment-list");
+            commentList.innerHTML = ""; // 기존 댓글 초기화
+        
+            try {
+                const res = await fetch(`${CONFIG.API_URL}/posts/${post_id}/comment`, { method: "GET" });
+                if (!res.ok) throw new Error("서버 응답 실패");
+                const commentData = await res.json();
+        
+                commentData.forEach(comment => {
+                    commentList.appendChild(UserItem(comment,post_id));
+        
+                    const commentContent = document.createElement("p");
+                    commentContent.classList.add("comment-content");
+                    commentContent.innerHTML = `<p>${comment.comment_content}</p>`;
+                    commentList.appendChild(commentContent);
+
+                });
+
+                const commentCount = document.getElementById("comment-count");
+                commentCount.innerText = `${commentData.length}`
+        
+            } catch (err) {
+                commentList.innerHTML = `<p>댓글을 불러오지 못했습니다.</p>`;
+                console.error(err);
+            }
+        }
+    
+        /** 댓글 초기 렌더링 */
+        await renderComments(post_id);
+
        // 작성자 정보 출력
        const userItem = document.getElementById("userItem");
        userItem.appendChild(UserItem({
@@ -54,33 +87,7 @@ export default async function BoardDetailPage (post_id) {
            post_id: post_id,
        }));
 
-    /** 댓글 렌더링 */
-    async function renderComments(post_id) {
-        const commentList = document.getElementById("comment-list");
-        commentList.innerHTML = ""; // 기존 댓글 초기화
-    
-        try {
-            const res = await fetch(`${CONFIG.API_URL}/posts/${post_id}/comment`, { method: "GET" });
-            if (!res.ok) throw new Error("서버 응답 실패");
-            const commentData = await res.json();
-    
-            commentData.forEach(comment => {
-                commentList.appendChild(UserItem(comment,post_id));
-    
-                const commentContent = document.createElement("p");
-                commentContent.classList.add("comment-content");
-                commentContent.innerHTML = `<p>${comment.comment_content}</p>`;
-                commentList.appendChild(commentContent);
-            });
-    
-        } catch (err) {
-            commentList.innerHTML = `<p>댓글을 불러오지 못했습니다.</p>`;
-            console.error(err);
-        }
-    }
-
-    /** 댓글 초기 렌더링 */
-    await renderComments(post_id);
+  
 
     /** 댓글 작성 버튼 */
     const commentButton = Button({
