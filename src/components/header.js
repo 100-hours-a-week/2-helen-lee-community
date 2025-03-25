@@ -5,7 +5,7 @@ export default function Header () {
     
     header.innerHTML = `
     <div class="header-div">
-        <h1>아무 말 대잔치</h1>
+        <h1>조잘조잘</h1>
         <div id="profile"></div>
     </div>
   
@@ -17,5 +17,14 @@ export default function Header () {
     Profile.appendChild(ProfileImage)
 
     ProfileImage.addEventListener("click", ()=> navigateTo('/profile'))
+
+    // 스크롤 시 헤더 스타일 변경
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 10) {
+            header.classList.add("header-scrolled");
+        } else {
+            header.classList.remove("header-scrolled");
+        }
+    });
 
 }

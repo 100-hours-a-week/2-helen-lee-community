@@ -8,8 +8,8 @@ export default function BoardListPage () {
     const app = document.getElementById("app");
     app.innerHTML = `
         <div class="board-container">
-            <p>안녕하세요,<span id="user-name"></span></p>
-            <p>아무 말 대잔치 <strong>게시판</strong> 입니다. </p>
+            <p>안녕하세요,<span id="user-name"></span> !</p>
+            <p>조잘조잘 <strong>게시판</strong> 입니다. </p>
             <div id="board-button-div"></div>
             <div id="board-list" class="board-list"></div>
         </div>

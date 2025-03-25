@@ -10,7 +10,7 @@ export function BoardItem(board) {
     boardItem.innerHTML = `
         <h3>${title}</h3>
         <div class="board-info-div">
-            <p>좋아요 ${like_count}  댓글 ${comment_count}  조회수 ${views_count}</p>
+            <p>좋아요 ${like_count}  댓글 ${comment_count}</p>
             <span class="board-date">${formatDate(created_at)}</span>
         </div>
         <hr class="board-divider" />

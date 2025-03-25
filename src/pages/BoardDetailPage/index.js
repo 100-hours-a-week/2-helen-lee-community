@@ -34,8 +34,8 @@ export default async function BoardDetailPage (post_id) {
             <div class="boardItem-img"></div>
             <p class="post-content">${postData.post_content}</p>
             <div class="post-stats">
-                <div class="stat-item"><strong>${postData.like_count}</strong> 좋아요수</div>
-                <div class="stat-item"><strong id="comment-count"></strong> 댓글수</div>
+                <div class="stat-item" id="stat-item-heart">좋아요<strong>${postData.like_count}</strong></div>
+                <div class="stat-item">댓글<strong id="comment-count"></strong> </div>
             </div>
             <hr class="boardItem-hr"/>
             <div class="comment-section">
@@ -94,7 +94,6 @@ export default async function BoardDetailPage (post_id) {
         text: '댓글 등록',
         onClick: () => {
             uploadComment();
-            // 댓글 등록 API 작성하면 여기에 붙이면 됨
         },
         className: "comment-button"
     });
@@ -127,6 +126,31 @@ export default async function BoardDetailPage (post_id) {
         } catch(err) {
             console.log(err);
             alert("댓글 작성 실패");
+        }
+    }
+
+  
+
+    /** 좋아요 등록  */
+    const StatItemHeart = document.getElementById("stat-item-heart");
+    StatItemHeart.addEventListener('click',
+        () => postHeart()
+      
+    )
+    
+    async function postHeart() {
+        try {
+            const res = await fetch(`${CONFIG.API_URL}/posts/${post_id}/heart`, 
+            {
+                method: "POST",
+            })
+
+            if(!res.ok) throw new Error("좋아요 등록 실패");
+            window.location.reload();
+        }
+        catch (err) {
+            console.log(err);
+            alert("좋아요 등록 실패");
         }
     }
 
