@@ -16,6 +16,11 @@ body {
 
 }
 
+.logo {
+    display: block; 
+    margin: 10px auto;
+}
+
 /* 헤더 */
 .header {
 

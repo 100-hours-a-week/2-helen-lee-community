@@ -8,6 +8,7 @@ export default function BoardListPage () {
     const app = document.getElementById("app");
     app.innerHTML = `
         <div class="board-container">
+            <img src="/jojaljojal.png" width="100" height="80" class="logo"/>
             <p>안녕하세요,<span id="user-name"></span> !</p>
             <p>조잘조잘 <strong>게시판</strong> 입니다. </p>
             <div id="board-button-div"></div>
