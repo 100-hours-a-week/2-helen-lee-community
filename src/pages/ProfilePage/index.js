@@ -25,14 +25,6 @@ export default function ProfilePage () {
     </div>
     `;
 
-    const ProfileCompletedButtonDiv = document.querySelector(".profile-completed-button-div");
-
-    const profileCompletedButton = Button({
-        text: "수정완료",
-        onClick: () => {console.log('수정 완료')},
-        className: "profile-completed-button"
-    })
-
     const ProfileForm = document.querySelector(".profile-form");
 
     const EditButton = Button({
@@ -47,7 +39,7 @@ export default function ProfilePage () {
 
     ProfileForm.appendChild(EditButton)
     ProfileForm.appendChild(DeleteButton)
-    ProfileCompletedButtonDiv.appendChild(profileCompletedButton)
+  
 
 
     /** 회원 정보 수정 */
