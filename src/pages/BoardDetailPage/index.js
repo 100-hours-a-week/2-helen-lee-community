@@ -1,5 +1,6 @@
 import Button from "../../components/Button.js";
 import CONFIG from "../../config.js";
+import { navigateTo } from "../../router.js";
 import UserItem from "../BoardDetailPage/components/UserItem.js";
 export default async function BoardDetailPage (post_id) {
     const app = document.getElementById("app");
@@ -49,36 +50,40 @@ export default async function BoardDetailPage (post_id) {
        userItem.appendChild(UserItem({
            nickname: postData.nickname,
            created_at: postData.created_at,
-           profile_image: postData.profile_image_url
+           profile_image: postData.profile_image_url,
+           post_id: post_id,
+           comment_id: postData.comment_id
        }));
 
-    // 댓글 리스트 fetch
-    const commentList = document.getElementById("comment-list");
-    let commentData;
-    try {
-        const res = await fetch(`${CONFIG.API_URL}/posts/${post_id}/comment`,
-            {method: "GET"}
-        )
-
-        if(!res.ok) throw new Error("서버 응답 실패");
-        commentData = await res.json();
-
-    } catch (err) {
-        commentList.innerHTML=`<p>댓글을 불러오지 못했습니다.</p>`;
-        return;
+    /** 댓글 렌더링 */
+    async function renderComments(post_id) {
+        const commentList = document.getElementById("comment-list");
+        commentList.innerHTML = ""; // 기존 댓글 초기화
+    
+        try {
+            const res = await fetch(`${CONFIG.API_URL}/posts/${post_id}/comment`, { method: "GET" });
+            if (!res.ok) throw new Error("서버 응답 실패");
+            const commentData = await res.json();
+    
+            commentData.forEach(comment => {
+                commentList.appendChild(UserItem(comment,post_id));
+    
+                const commentContent = document.createElement("p");
+                commentContent.classList.add("comment-content");
+                commentContent.innerHTML = `<p>${comment.comment_content}</p>`;
+                commentList.appendChild(commentContent);
+            });
+    
+        } catch (err) {
+            commentList.innerHTML = `<p>댓글을 불러오지 못했습니다.</p>`;
+            console.error(err);
+        }
     }
 
-    // 댓글 항목 UI 렌더링
-    commentData.forEach(comment => {
-        commentList.appendChild(UserItem(comment));
+    /** 댓글 초기 렌더링 */
+    await renderComments(post_id);
 
-        const commentContent = document.createElement("p");
-        commentContent.classList.add("comment-content");
-        commentContent.innerHTML = `<p>${comment.comment_content}</p>`;
-        commentList.appendChild(commentContent);
-    });
-
-    // 댓글 작성 버튼
+    /** 댓글 작성 버튼 */
     const commentButton = Button({
         text: '댓글 등록',
         onClick: () => {
@@ -108,11 +113,16 @@ export default async function BoardDetailPage (post_id) {
             )
             
             if (!res.ok) throw new Error("서버 응답 실패");
+            else {
+                // 댓글 작성 후 다시 렌더링
+                renderComments(post_id);
+            }
             
         } catch(err) {
             console.log(err);
             alert("댓글 작성 실패");
         }
     }
+
 }
 
