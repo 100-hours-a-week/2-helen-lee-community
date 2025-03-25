@@ -1,6 +1,7 @@
 import Button from "../../../components/Button";
 import CONFIG from "../../../config";
 import { navigateTo } from "../../../router";
+import formatDate from "../../../utils/date/formatDate";
 
 /** 재사용되는 유저 프로필 항목.
  * 
@@ -9,7 +10,6 @@ import { navigateTo } from "../../../router";
  * 게시글에서 사용될 경우 comment_id가 전달되지 않아, 이를 기반으로 구분한다.
  **/
 export default function UserItem ({nickname, profile_image, created_at,comment_id, post_id}) {
-
 
     const current_user = JSON.parse(sessionStorage.getItem("user")).nickname;
     console.log(sessionStorage.getItem("user"));
@@ -20,7 +20,7 @@ export default function UserItem ({nickname, profile_image, created_at,comment_i
     <div class= "userItem-meta-div">
         <div class="userItem-profile-placeholder"></div>
         <span class="userItem-author">${nickname}</span>
-        <span class="userItem-date">${created_at}</span>
+        <span class="userItem-date">${formatDate(created_at)}</span>
     </div>
         ${current_user === nickname ?  
             `<div class ="userItem-button-div">

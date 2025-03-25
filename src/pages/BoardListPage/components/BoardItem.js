@@ -1,4 +1,5 @@
 import { navigateTo } from "../../../router.js";
+import formatDate from "../../../utils/date/formatDate.js";
 
 export function BoardItem(board) {
    
@@ -10,7 +11,7 @@ export function BoardItem(board) {
         <h3>${title}</h3>
         <div class="board-info-div">
             <p>좋아요 ${like_count}  댓글 ${comment_count}  조회수 ${views_count}</p>
-            <span class="board-date">${created_at}</span>
+            <span class="board-date">${formatDate(created_at)}</span>
         </div>
         <hr class="board-divider" />
         <div class="board-footer">

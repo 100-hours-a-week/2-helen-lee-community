@@ -5,7 +5,8 @@ import UserItem from "../BoardDetailPage/components/UserItem.js";
 export default async function BoardDetailPage (post_id) {
     const app = document.getElementById("app");
     console.log(post_id);
-     //  게시글 데이터
+    
+     //  게시글 데이터 fetch
      let postData;
      try {
          const res = await fetch(`${CONFIG.API_URL}/posts/${post_id}`,
@@ -13,7 +14,6 @@ export default async function BoardDetailPage (post_id) {
          );
          if (!res.ok) throw new Error("서버 응답 실패");
          postData = await res.json(); 
-         console.log(postData);
          
      
      } catch (err) {
@@ -52,7 +52,6 @@ export default async function BoardDetailPage (post_id) {
            created_at: postData.created_at,
            profile_image: postData.profile_image_url,
            post_id: post_id,
-           comment_id: postData.comment_id
        }));
 
     /** 댓글 렌더링 */
