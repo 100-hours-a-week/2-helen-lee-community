@@ -79,7 +79,7 @@ export default async function BoardDetailPage (post_id) {
     userItem.appendChild(UserItem({
         nickname: postData.nickname,
         created_at: postData.created_at,
-        profile_image: postData.profile_image_url,
+        profile_image_url: postData.profile_image_url,
         post_id: post_id,
     }));
 

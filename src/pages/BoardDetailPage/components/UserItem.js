@@ -9,7 +9,7 @@ import formatDate from "../../../utils/date/formatDate";
  * 댓글일 경우 post_id, comment_id가 parameter 로 전달되고 
  * 게시글에서 사용될 경우 comment_id가 전달되지 않아, 이를 기반으로 구분한다.
  **/
-export default function UserItem ({nickname, profile_image, created_at,comment_id, post_id}) {
+export default function UserItem ({nickname, profile_image_url, created_at,comment_id, post_id}) {
 
     const current_user = JSON.parse(sessionStorage.getItem("user")).nickname;
     console.log(sessionStorage.getItem("user"));
@@ -29,6 +29,19 @@ export default function UserItem ({nickname, profile_image, created_at,comment_i
             </div>` : `<span></span>`
         }
     `
+
+const UserItemProfileHolder = userItemMeta.querySelector(".userItem-profile-placeholder");
+const profileImageUrl = profile_image_url || null;
+
+UserItemProfileHolder.style.backgroundImage = `url('${profileImageUrl}')`;
+UserItemProfileHolder.style.backgroundSize = "cover";
+UserItemProfileHolder.style.backgroundPosition = "center";
+UserItemProfileHolder.style.width = "40px";
+UserItemProfileHolder.style.height = "40px";
+UserItemProfileHolder.style.borderRadius = "50%";
+console.log(profileImageUrl);
+
+
     const UserItemButtonDiv = userItemMeta.querySelector(".userItem-button-div");
 
     // 계정 주인의 유저 정보일 경우

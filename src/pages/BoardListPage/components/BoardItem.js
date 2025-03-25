@@ -3,7 +3,7 @@ import formatDate from "../../../utils/date/formatDate.js";
 
 export function BoardItem(board) {
    
-    const {post_id, title, nickname, created_at, like_count, comment_count = 0, views_count} = board;
+    const {post_id, title, nickname, created_at, like_count, comment_count = 0, views_count, profile_image_url} = board;
     const boardItem = document.createElement("div");
     boardItem.classList.add("board-item");
     console.log(board);
@@ -19,6 +19,16 @@ export function BoardItem(board) {
             <span class="board-author">${nickname}</span>
         </div>
     `;
+
+    const ProfileHolder = boardItem.querySelector(".profile-placeholder");
+    const profileImageUrl = profile_image_url || null;
+
+    ProfileHolder.style.backgroundImage = `url('${profileImageUrl}')`;
+    ProfileHolder.style.backgroundSize = "cover";
+    ProfileHolder.style.backgroundPosition = "center";
+    ProfileHolder.style.width = "40px";
+    ProfileHolder.style.height = "40px";
+    ProfileHolder.style.borderRadius = "50%";
 
     // 클릭 이벤트 추가 → 게시글 상세 페이지로 이동
     boardItem.addEventListener("click", (event) => {

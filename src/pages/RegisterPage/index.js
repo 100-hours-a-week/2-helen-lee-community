@@ -7,24 +7,24 @@ export default function RegisterPage() {
     app.innerHTML = `
         <div class="register-container">
             <h2>회원가입</h2>
-            <form class="register-form">
+            <form id="register-form" class="register-form">
                 <label>프로필 사진</label>
-                <input type="file" class="profile-upload">
+                <input name="image" type="file" class="profile-upload">
 
                 <label>이메일*</label>
-                <input type="email" id="email" placeholder="이메일을 입력하세요">
+                <input name="email" type="email" id="email" placeholder="이메일을 입력하세요">
                 <span class="error-message" id="email-error"></span>
 
                 <label>비밀번호*</label>
-                <input type="password" id="password" placeholder="비밀번호를 입력하세요">
+                <input name="password" type="password" id="password" placeholder="비밀번호를 입력하세요">
                 <span class="error-message" id="password-error"></span>
 
                 <label>비밀번호 확인*</label>
-                <input type="password" id="password-confirm" placeholder="비밀번호를 다시 입력하세요">
+                <input name="password-confirm" type="password" id="password-confirm" placeholder="비밀번호를 다시 입력하세요">
                 <span class="error-message" id="password-confirm-error"></span>
 
                 <label>닉네임*</label>
-                <input type="text" id="nickname" placeholder="닉네임을 입력하세요">
+                <input name="nickname" type="text" id="nickname" placeholder="닉네임을 입력하세요">
                 <span class="error-message" id="nickname-error"></span>
 
                 <div id="button-container"></div>
@@ -92,27 +92,39 @@ function validateForm() {
 
     // 회원가입 요청
     if (isValid) {
-       requestRegister({email,password,nickname,profile_image_url})
+       requestRegister()
     }
 }
 
 // 회원가입 요청 함수
-async function requestRegister({email,password,nickname,profile_image_url}) {
-    try {
-     
-        const response = await fetch(`${CONFIG.API_URL}/users`, {
-           method: "POST",
-           headers: {
-               "Content-Type": "application/json",
-           },
-           body: JSON.stringify({ email, password, nickname, profile_image_url }),
-       });
+async function requestRegister() {
+    //{email,password,nickname,profile_image_url}
+   
 
-       if (response.ok) {
-           // 로그인 성공
-           navigateTo("/boards");
-       }
-   } catch (error) {
-    alert("회원가입 오류! 서버에 문제가 발생했습니다.")
-   }
+    const form = document.getElementById('register-form');
+    const formData = new FormData();
+
+    formData.append('email', form.email.value);
+    formData.append('password', form.password.value);
+    formData.append('nickname', form.nickname.value);
+
+    if (form.image.files.length > 0) {
+        formData.append('profile_image_url', form.image.files[0]);
+    }
+
+    try {
+        const response = await fetch(`${CONFIG.API_URL}/users`, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.ok) {
+            navigateTo("/");
+        } else {
+            alert("회원가입 실패: 입력을 확인하세요.");
+        }
+    } catch (error) {
+        alert("회원가입 오류! 서버에 문제가 발생했습니다.");
+    }
+
 }

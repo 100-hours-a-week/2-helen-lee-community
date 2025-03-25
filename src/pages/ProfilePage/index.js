@@ -33,7 +33,10 @@ export default function ProfilePage () {
     })
     const DeleteButton = Button({
         text : "회원탈퇴",
-        onClick: () => {console.log(탈퇴하기)},
+        onClick: () => {
+
+            alert("정말 탈퇴하시겠어요?" );
+        },
         className: "profile-deleted-btn"
     })
 
