@@ -10,9 +10,10 @@ export default function Header () {
     </div>
   
     `;
+
     const Profile = document.getElementById("profile")
     const ProfileImage = document.createElement("img")
-    ProfileImage.src = './src/assets/character.jpg'
+    ProfileImage.src = JSON.parse(sessionStorage.getItem("user")).profile_image_url;
     ProfileImage.classList.add("profile-image")
     Profile.appendChild(ProfileImage)
 
