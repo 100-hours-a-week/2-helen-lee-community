@@ -54,4 +54,5 @@ export default function BoardListPage () {
 
     const nickname = document.getElementById("user-name")
     nickname.innerHTML=`${JSON.parse(sessionStorage.getItem("user")).nickname}`
+
 }

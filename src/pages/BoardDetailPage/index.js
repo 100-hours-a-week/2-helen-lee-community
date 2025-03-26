@@ -14,6 +14,7 @@ export default async function BoardDetailPage (post_id) {
          );
          if (!res.ok) throw new Error("서버 응답 실패");
          postData = await res.json(); 
+         console.log(postData);
          
      
      } catch (err) {
@@ -27,7 +28,7 @@ export default async function BoardDetailPage (post_id) {
             <h2 class="boardItem-title">${postData.title}</h2>
             <div id="userItem"></div>
             <hr class="boardItem-hr"/>
-            <div class="boardItem-img"></div>
+            <div id = "boardItem-img" class="boardItem-img"></div>
             <p class="post-content">${postData.post_content}</p>
             <div class="post-stats">
                 <div class="stat-item" id="stat-item-heart">좋아요<strong>${postData.like_count}</strong></div>
@@ -41,6 +42,16 @@ export default async function BoardDetailPage (post_id) {
             <div class="comment-list" id="comment-list"></div>
         </div>
     `;
+
+     /** 게시글 이미지 */
+     const BoardItemImgDiv = document.getElementById("boardItem-img")
+ 
+    const postImageUrl = postData.post_image_url|| null;
+
+    BoardItemImgDiv.style.backgroundImage = `url('${postImageUrl}')`;
+    BoardItemImgDiv.style.backgroundSize = "cover";
+    BoardItemImgDiv.style.backgroundPosition = "center";
+
 
     /** 댓글 fetch */
     async function renderComments(post_id) {
@@ -147,6 +158,8 @@ export default async function BoardDetailPage (post_id) {
             alert("좋아요 등록 실패");
         }
     }
+
+
 
 }
 

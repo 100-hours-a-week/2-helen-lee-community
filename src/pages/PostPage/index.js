@@ -40,14 +40,23 @@ export default function PostPage () {
 async function requestUpload () {
     const title = document.getElementById("title").value;
     const post_content = document.getElementById("content").value;
-    const post_image_url = document.getElementById("image").value;
     const user_id = JSON.parse(sessionStorage.getItem("user")).user_id;
+
+    const postForm = document.getElementById("post-form")
+
+    const formData = new FormData();
+    formData.append('post_content', post_content)
+    formData.append('user_id', user_id)
+    formData.append('title', title)
+
+    if (postForm.image.files.length > 0) {
+        formData.append('post_image_url', postForm.image.files[0]);
+    }
 
     try {
         const response = await fetch(`${CONFIG.API_URL}/posts`, {
             method: "POST",
-            headers: {"Content-Type" : "application/json"},
-            body: JSON.stringify({title, post_content, post_image_url, user_id})
+            body: formData
         })
 
         if (response.ok) {

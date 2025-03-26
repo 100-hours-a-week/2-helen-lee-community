@@ -39,8 +39,6 @@ UserItemProfileHolder.style.backgroundPosition = "center";
 UserItemProfileHolder.style.width = "40px";
 UserItemProfileHolder.style.height = "40px";
 UserItemProfileHolder.style.borderRadius = "50%";
-console.log(profileImageUrl);
-
 
     const UserItemButtonDiv = userItemMeta.querySelector(".userItem-button-div");
 
