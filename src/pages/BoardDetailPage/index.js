@@ -125,6 +125,7 @@ export default async function BoardDetailPage (post_id) {
             if (!res.ok) throw new Error("서버 응답 실패");
             else {
                 // 댓글 작성 후 다시 렌더링
+                commentInput.value = "";
                 renderComments(post_id);
             }
             
@@ -138,6 +139,9 @@ export default async function BoardDetailPage (post_id) {
 
     /** 좋아요 등록  */
     const StatItemHeart = document.getElementById("stat-item-heart");
+    const HeartCountEl = StatItemHeart.querySelector("strong");
+    let likeCount = parseInt(HeartCountEl.textContent);
+
     StatItemHeart.addEventListener('click',
         () => postHeart()
       
@@ -151,7 +155,11 @@ export default async function BoardDetailPage (post_id) {
             })
 
             if(!res.ok) throw new Error("좋아요 등록 실패");
-            window.location.reload();
+
+            // UI 반영
+            likeCount = likeCount + 1 ;
+            HeartCountEl.textContent = likeCount;
+
         }
         catch (err) {
             console.log(err);
