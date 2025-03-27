@@ -16,33 +16,31 @@ body {
 
 }
 
+img {
+    cursor: pointer;
+}
+
 .logo {
     display: block; 
     margin: 10px auto;
 }
 
-/* 헤더 */
-.header {
-
-    padding: 20px;
-    border-bottom: 1px solid #ececec;
-}
-
 .header-div {
     display: flex;
-    text-align: center;
-    justify-content: center;
+    justify-content: space-around;
+    align-items: center;
 }
 
 /* 기본 헤더 스타일 */
 .header {
     padding: 20px;
-    border-bottom: 1px solid gray;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     position: sticky;
+    border-bottom: 1px solid #e0e0e0;
     top: 0;
     z-index: 100;
     background-color: transparent;
+    
 }
 
 /* 스크롤되었을 때 */
@@ -54,7 +52,6 @@ body {
 
 #profile {
    align-items: center;
-   margin-left: 80px;
 }
 
 .profile-image {
