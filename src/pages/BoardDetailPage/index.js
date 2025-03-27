@@ -49,8 +49,7 @@ export default async function BoardDetailPage (post_id) {
     const postImageUrl = postData.post_image_url|| null;
 
     BoardItemImgDiv.style.backgroundImage = `url('${postImageUrl}')`;
-    BoardItemImgDiv.style.backgroundSize = "cover";
-    BoardItemImgDiv.style.backgroundPosition = "center";
+ 
 
 
     /** 댓글 fetch */
