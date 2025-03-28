@@ -27,7 +27,7 @@ img {
 
 .header-div {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
 }
 
@@ -226,6 +226,7 @@ img {
 }
 
 .board-item {
+    cursor: pointer;
     padding: 15px;
     background: white;
     border-radius: 8px;

@@ -10,7 +10,7 @@ export default function BoardListPage () {
         <div class="board-container">
             <img src="/jojaljojal.png" width="100" height="80" class="logo"/>
             <p>안녕하세요,<span id="user-name"></span> !</p>
-            <p>조잘조잘 <strong>게시판</strong> 입니다. </p>
+            <p><strong>조잘조잘</strong> 아무 말이나 같이 해봐요 🐾 </p>
             <div id="board-button-div"></div>
             <div id="board-list" class="board-list"></div>
         </div>
